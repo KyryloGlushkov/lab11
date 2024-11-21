@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 600px;
+            color: #fff;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 450px;
+            text-align: center;
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 40px rgba(255, 0, 255, 0.3);
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff00ff;
+        }
+
+        .game-info p {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+        }
+
+        .word-card-wrapper {
+            width: 100%;
+            height: 230px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(255, 0, 255, 0.5);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .word-card-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.8);
+        }
+
+        .word-card {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff00ff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 15px #ff00ff, 0 0 25px #ff00ff;
+        }
+
+        #user-input {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            border-radius: 12px;
+            border: 2px solid #ff00ff;
+            background-color: #1a1a1a;
+            color: #fff;
+            font-size: 20px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        #user-input:focus {
+            border-color: #00ffcc;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px;
+            width: 100%;
+            background: linear-gradient(135deg, #ff00ff, #00ffcc);
+            color: #fff;
+            font-size: 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 255, 255, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 255, 255, 0.7);
+        }
+
+        .score-board {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #fff;
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px #ff00ff;
+        }
+
+        .score-board span {
+            color: #00ffcc;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-content h2 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #close-modal {
+            background-color: #ff5722;
+            padding: 12px 25px;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #close-modal:hover {
+            background-color: #e64a19;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Language Learning</h1>
+        <div class="game-info">
+            <p>Step: <span id="current-step">1</span> of <span id="total-steps">10</span></p>
+            <p class="score-board">
+                Correct: <span id="correct-count">0</span> | Incorrect: <span id="incorrect-count">0</span>
+            </p>
+        </div>
+        <div id="word-card-wrapper" class="word-card-wrapper">
+            <div id="word-card" class="word-card"></div>
+        </div>
+        <input type="text" id="user-input" placeholder="Enter the translation">
+        <button id="check-answer">Check</button>
+    </div>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2>Your knowledge level: <span id="knowledge-level"></span></h2>
+            <button id="close-modal">Close</button>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let words = {
+                'hello': 'привіт',
+                'world': 'світ',
+                'computer': 'комп’ютер',
+                'language': 'мова',
+                'study': 'вивчати',
+                'book': 'книга',
+                'car': 'автомобіль',
+                'apple': 'яблуко',
+                'friend': 'друг',
+                'house': 'будинок'
+            };
+
+            let currentStep = 1;
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
+            const totalSteps = 10;
+
+            function getRandomWord() {
+                let word = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)];
+                $('#word-card').text(word);
+            }
+
+            function Level() {
+                let percentage = (correctAnswers / totalSteps) * 100;
+                let level = 'low';
+                if (percentage >= 70) {
+                    level = 'high';
+                } else if (percentage >= 40) {
+                    level = 'mid';
+                }
+                $('#knowledge-level').text(level);
+                $('#modal').show();
+            }
+
+            $('#check-answer').click(function () {
+                let answer = $('#user-input').val().trim(); // Видаляємо пробіли
+                if (answer === '') {
+                    alert('Please enter a translation!');
+                    return;
+                }
+                let word = $('#word-card').text().toLowerCase();
+                if (answer.toLowerCase() === words[word]) {
+                    correctAnswers++;
+                    $('#correct-count').text(correctAnswers);
+                } else {
+                    incorrectAnswers++;
+                    $('#incorrect-count').text(incorrectAnswers);
+                }
+
+                currentStep++;
+                if (currentStep > totalSteps) {
+                    Level();
+                } else {
+                    $('#current-step').text(currentStep);
+                    getRandomWord();
+                }
+
+                $('#user-input').val(''); // Очищаємо поле вводу
+            });
+
+            $('#close-modal').click(function () {
+                $('#modal').hide();
+            });
+
+            
+            $('#total-steps').text(totalSteps);
+            getRandomWord();
+        });
+    </script>
+</body>
+</html>
